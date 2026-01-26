@@ -1,5 +1,5 @@
 import { PLAYER as player, renderUI } from "./displayUI.js";
-import { world } from "./displayUI.js";
+import { jump } from "./physics.js";
 const KEY_SEQUENCE_TO_DIRECTION = {
   "\x1b[A": "UP",
   "w\x00\x00": "UP",
@@ -13,6 +13,10 @@ const KEY_SEQUENCE_TO_DIRECTION = {
   "\x1b[D": "LEFT",
   "a\x00\x00": "LEFT",
 };
+const jumpData = {
+  jumpPhase: "up",
+  stepCount: 0,
+};
 
 const applyMovementToPlayer = (direction) => {
   switch (direction) {
@@ -21,7 +25,7 @@ const applyMovementToPlayer = (direction) => {
       break;
 
     case "UP":
-      player.y -= 1;
+      jump(jumpData);
       break;
 
     case "LEFT":
@@ -47,6 +51,8 @@ const readKeySequence = async () => {
 
 export const startInputListener = async () => {
   while (true) {
+    console.log({ player });
+
     const keySequence = await readKeySequence();
 
     const direction = KEY_SEQUENCE_TO_DIRECTION[keySequence];

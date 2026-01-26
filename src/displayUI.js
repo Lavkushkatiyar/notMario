@@ -14,6 +14,13 @@ export const PLAYER = {
   x: 0,
   y: world.HEIGHT - world.ground_Tile - 1,
   icon: "🍄",
+
+  fx: 0,
+  fy: 0,
+  vx: 0,
+  vy: 0,
+  width: 1,
+  height: 1,
 };
 const worlds = [];
 
@@ -52,7 +59,7 @@ const buildWorld = () => {
   addPlatform(60, 8, 10);
 };
 
-export const renderUI = () => {
+export const renderUI = async () => {
   buildWorld();
   console.clear();
   let output = "";
@@ -68,5 +75,5 @@ export const renderUI = () => {
     output += "\n";
   }
 
-  Deno.stdout.write(new TextEncoder().encode(output));
+  await Deno.stdout.write(new TextEncoder().encode(output));
 };
