@@ -5,4 +5,4 @@ so First goal is to setUp the dir structure
 
 # In UI Layer
 
--- create a grid first where we can see the changes
+-- create a grid first where we can see the changes [done]
