@@ -5,4 +5,11 @@ so First goal is to setUp the dir structure
 
 # In UI Layer
 
--- create a grid first where we can see the changes [done]
+-- create a grid first where we can see the changes [done] -- create the wall
+[done]
+
+# in playerMovement
+
+1. setup the input [done]
+2. move character to all direction [done]
+3. add some object in the world [done]

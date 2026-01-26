@@ -1,5 +1,5 @@
 import { PLAYER as player, renderUI } from "./displayUI.js";
-
+import { world } from "./displayUI.js";
 const KEY_SEQUENCE_TO_DIRECTION = {
   "\x1b[A": "UP",
   "w\x00\x00": "UP",
