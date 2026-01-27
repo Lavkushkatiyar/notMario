@@ -1,5 +1,5 @@
-const TILES = {
-  AIR: "🟦",
+export const TILES = {
+  AIR: "  ",
   GROUND: "🟫",
   PLATFORM: "🟩",
   WALL: "🧱",
@@ -22,7 +22,7 @@ export const PLAYER = {
   width: 1,
   height: 1,
 };
-const worlds = [];
+export const worlds = [];
 
 const addSky = () => {
   for (let row = 0; row < world.HEIGHT; row++) {
@@ -36,6 +36,8 @@ const addPlatform = (startCol, row, length) => {
     }
   }
 };
+
+export const solidTiles = new Set([TILES.GROUND, TILES.PLATFORM, TILES.WALL]);
 
 const addGround = () => {
   for (let row = 0; row < world.ground_Tile; row++) {

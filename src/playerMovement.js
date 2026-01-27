@@ -1,5 +1,6 @@
 import { PLAYER as player, renderUI } from "./displayUI.js";
-import { jump } from "./physics.js";
+import { goDown as goToSolidTile, isSolidAt, jump } from "./physics.js";
+
 const KEY_SEQUENCE_TO_DIRECTION = {
   "\x1b[A": "UP",
   "w\x00\x00": "UP",
@@ -20,20 +21,23 @@ const jumpData = {
 
 const applyMovementToPlayer = (direction) => {
   switch (direction) {
-    case "DOWN":
-      player.y += 1;
-      break;
-
     case "UP":
       jump(jumpData);
       break;
 
     case "LEFT":
       player.x -= 1;
+      if (!isSolidAt(player.x, player.y)) {
+        goToSolidTile();
+      }
+
       break;
 
     case "RIGHT":
       player.x += 1;
+      if (!isSolidAt(player.x, player.y)) {
+        goToSolidTile();
+      }
       break;
   }
 };
@@ -51,8 +55,6 @@ const readKeySequence = async () => {
 
 export const startInputListener = async () => {
   while (true) {
-    console.log({ player });
-
     const keySequence = await readKeySequence();
 
     const direction = KEY_SEQUENCE_TO_DIRECTION[keySequence];
