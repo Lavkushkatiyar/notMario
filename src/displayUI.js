@@ -4,7 +4,8 @@ export const TILES = {
   PLATFORM: "🟩",
   WALL: "🧱",
 };
-export const world = {
+
+export const worldDimensions = {
   WIDTH: 88,
   HEIGHT: 25,
   ground_Tile: 9,
@@ -12,27 +13,31 @@ export const world = {
 
 export const PLAYER = {
   x: 0,
-  y: world.HEIGHT - world.ground_Tile - 1,
+  y: worldDimensions.HEIGHT - worldDimensions.ground_Tile - 1,
   icon: "🍄",
-
-  fx: 0,
-  fy: 0,
-  vx: 0,
-  vy: 0,
-  width: 1,
-  height: 1,
 };
-export const worlds = [];
+export const pixels = [];
+
+const inBetween = (min, max, value) => {
+  return value >= min && value < max;
+};
 
 const addSky = () => {
-  for (let row = 0; row < world.HEIGHT; row++) {
-    worlds[row] = Array.from({ length: world.WIDTH }, () => TILES.AIR);
+  for (let row = 0; row < worldDimensions.HEIGHT; row++) {
+    pixels[row] = Array.from(
+      { length: worldDimensions.WIDTH },
+      () => TILES.AIR,
+    );
   }
 };
+
 const addPlatform = (startCol, row, length) => {
   for (let col = startCol; col < startCol + length; col++) {
-    if (col >= 0 && col < world.WIDTH && row >= 0 && row < world.HEIGHT) {
-      worlds[row][col] = TILES.PLATFORM;
+    if (
+      inBetween(0, worldDimensions.WIDTH, col) &&
+      inBetween(0, worldDimensions.HEIGHT, row)
+    ) {
+      pixels[row][col] = TILES.PLATFORM;
     }
   }
 };
@@ -40,18 +45,20 @@ const addPlatform = (startCol, row, length) => {
 export const solidTiles = new Set([TILES.GROUND, TILES.PLATFORM, TILES.WALL]);
 
 const addGround = () => {
-  for (let row = 0; row < world.ground_Tile; row++) {
-    for (let col = 0; col < world.WIDTH; col++) {
-      worlds[(world.HEIGHT - 1) - row][col] = TILES.GROUND;
+  for (let row = 0; row < worldDimensions.ground_Tile; row++) {
+    for (let col = 0; col < worldDimensions.WIDTH; col++) {
+      pixels[(worldDimensions.HEIGHT - 1) - row][col] = TILES.GROUND;
     }
   }
 };
+
 const addWalls = () => {
-  for (let row = 0; row < world.HEIGHT; row++) {
-    worlds[row][0] = TILES.WALL;
-    worlds[row][world.WIDTH - 1] = TILES.WALL;
+  for (let row = 0; row < worldDimensions.HEIGHT; row++) {
+    pixels[row][0] = TILES.WALL;
+    pixels[row][worldDimensions.WIDTH - 1] = TILES.WALL;
   }
 };
+
 const buildWorld = () => {
   addSky();
   addGround();
@@ -66,12 +73,12 @@ export const renderUI = async () => {
   console.clear();
   let output = "";
 
-  for (let row = 0; row < world.HEIGHT; row++) {
-    for (let col = 0; col < world.WIDTH; col++) {
+  for (let row = 0; row < worldDimensions.HEIGHT; row++) {
+    for (let col = 0; col < worldDimensions.WIDTH; col++) {
       if (row === PLAYER.y && col === PLAYER.x) {
         output += PLAYER.icon;
       } else {
-        output += worlds[row][col];
+        output += pixels[row][col];
       }
     }
     output += "\n";

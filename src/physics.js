@@ -1,24 +1,28 @@
 import {
+  pixels,
   PLAYER as player,
   renderUI,
   solidTiles,
   TILES,
-  world,
-  worlds,
+  worldDimensions,
 } from "./displayUI.js";
 
-const inBounds = (col, row) => {
-  return col >= 0 && col < world.WIDTH && row >= 0 && row < world.HEIGHT;
+export const inBounds = (col, row) => {
+  return col >= 0 && col < worldDimensions.WIDTH && row >= 0 &&
+    row < worldDimensions.HEIGHT;
 };
 
 const tileAt = (col, row) => {
-  if (!inBounds(col, row)) return TILES.WALL;
-  return worlds[row][col];
+  if (inBounds(col, row)) {
+    return pixels[row][col];
+  }
+
+  return TILES.WALL;
 };
 
 export const isSolidAt = (col, row) => {
-  const t = tileAt(col, row);
-  return solidTiles.has(t);
+  const tile = tileAt(col, row);
+  return solidTiles.has(tile);
 };
 
 export const jump = ({ jumpPhase, stepCount }) => {
@@ -39,15 +43,15 @@ export const jump = ({ jumpPhase, stepCount }) => {
       }
     }
 
-    renderUI(world);
+    renderUI(worldDimensions);
   }, 200);
 };
-export const goDown = () => {
+export const fallTillSolidTile = () => {
   const interval = setInterval(() => {
     if (!isSolidAt(player.x, player.y + 1)) {
       player.y += 1;
     } else clearInterval(interval);
 
-    renderUI(world);
+    renderUI(worldDimensions);
   }, 200);
 };

@@ -1,5 +1,5 @@
 import { PLAYER as player, renderUI } from "./displayUI.js";
-import { goDown as goToSolidTile, isSolidAt, jump } from "./physics.js";
+import { fallTillSolidTile, isSolidAt, jump } from "./physics.js";
 
 const KEY_SEQUENCE_TO_DIRECTION = {
   "\x1b[A": "UP",
@@ -28,7 +28,7 @@ const applyMovementToPlayer = (direction) => {
     case "LEFT":
       player.x -= 1;
       if (!isSolidAt(player.x, player.y)) {
-        goToSolidTile();
+        fallTillSolidTile();
       }
 
       break;
@@ -36,7 +36,7 @@ const applyMovementToPlayer = (direction) => {
     case "RIGHT":
       player.x += 1;
       if (!isSolidAt(player.x, player.y)) {
-        goToSolidTile();
+        fallTillSolidTile();
       }
       break;
   }
@@ -53,7 +53,7 @@ const readKeySequence = async () => {
   return decoder.decode(buffer);
 };
 
-export const startInputListener = async () => {
+export const startGame = async () => {
   while (true) {
     const keySequence = await readKeySequence();
 
